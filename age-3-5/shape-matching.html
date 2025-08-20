@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shape Matching (Ages 3–5, Logic)</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; background: #f0f8ff; color: #333; }
+  h2 { color: #444; }
+  .game-area { display: flex; flex-direction: column; align-items: center; }
+  .targets, .pieces { display: flex; justify-content: center; margin: 20px; }
+  .target, .piece { margin: 15px; }
+  .circleTarget { width: 60px; height: 60px; border-radius: 50%; background: lightgray; }
+  .squareTarget { width: 60px; height: 60px; background: lightgray; }
+  .circle.piece { width: 60px; height: 60px; border-radius: 50%; }
+  .square.piece { width: 60px; height: 60px; }
+  #triangleTarget { width: 0; height: 0; border-left: 30px solid transparent; border-right: 30px solid transparent; border-bottom: 60px solid lightgray; }
+  #trianglePiece { width: 0; height: 0; border-left: 30px solid transparent; border-right: 30px solid transparent; border-bottom: 60px solid green; }
+  #shapeFeedback { font-size: 1.2em; min-height: 1.2em; }
+  footer { margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h2>Shape Matching</h2>
+  <p>Drag each shape to its matching outline.</p>
+  <div class="game-area">
+    <div class="targets">
+      <div id="circleTarget" class="target circleTarget" data-shape="circle"></div>
+      <div id="squareTarget" class="target squareTarget" data-shape="square"></div>
+      <div id="triangleTarget" class="target" data-shape="triangle"></div>
+    </div>
+    <div class="pieces">
+      <div id="circlePiece" class="piece circle" data-shape="circle" data-color="red" draggable="true" style="background: red;" ondragstart="drag(event)"></div>
+      <div id="squarePiece" class="piece square" data-shape="square" data-color="blue" draggable="true" style="background: blue;" ondragstart="drag(event)"></div>
+      <div id="trianglePiece" class="piece" data-shape="triangle" data-color="green" draggable="true" ondragstart="drag(event)"></div>
+    </div>
+    <div id="shapeFeedback"></div>
+  </div>
+  <footer><a href="index.html">← Back to Ages 3–5</a></footer>
+<script>
+  let placedCount = 0;
+  function allowDrop(ev) { ev.preventDefault(); }
+  function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+  function drop(ev) {
+    ev.preventDefault();
+    const draggedId = ev.dataTransfer.getData("text");
+    const draggedEl = document.getElementById(draggedId);
+    const targetEl = ev.currentTarget;
+    if (draggedEl && targetEl && draggedEl.dataset.shape === targetEl.dataset.shape) {
+      if (draggedEl.dataset.shape === "circle" || draggedEl.dataset.shape === "square") {
+        targetEl.style.background = draggedEl.dataset.color;
+      } else if (draggedEl.dataset.shape === "triangle") {
+        targetEl.style.borderBottomColor = draggedEl.dataset.color;
+      }
+      draggedEl.style.visibility = "hidden";
+      draggedEl.setAttribute('draggable', 'false');
+      placedCount++;
+      const feedback = document.getElementById('shapeFeedback');
+      feedback.style.color = "green"; feedback.innerText = "Correct!";
+      if (placedCount === 3) feedback.innerText = "All shapes matched! Great job!";
+    } else {
+      const feedback = document.getElementById('shapeFeedback');
+      feedback.style.color = "red"; feedback.innerText = "Try a different spot!";
+    }
+  }
+  document.querySelectorAll('.target').forEach(target => {
+    target.ondragover = allowDrop; target.ondrop = drop;
+  });
+</script>
+</body>
+</html>

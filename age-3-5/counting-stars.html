@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Counting Stars (Ages 3–5, Math)</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; background: #fdf6e3; color: #333; }
+  h2 { color: #444; }
+  .stars { font-size: 2em; margin: 20px; }
+  .star { color: gold; margin: 5px; }
+  .options button { font-size: 1.2em; margin: 10px; padding: 10px 20px; }
+  #feedback { font-size: 1.2em; margin: 15px; height: 1.2em; }
+  footer { margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h2>Counting Stars</h2>
+  <p>How many stars are there?</p>
+  <div id="starsContainer" class="stars"></div>
+  <div class="options">
+    <button id="option1"></button>
+    <button id="option2"></button>
+    <button id="option3"></button>
+  </div>
+  <div id="feedback"></div>
+  <footer><a href="index.html">← Back to Ages 3–5</a></footer>
+<script>
+  let currentAnswer = 0;
+  let questionNumber = 0;
+  const totalQuestions = 5;
+  let allowAnswer = true;
+  function nextQuestion() {
+    if (questionNumber >= totalQuestions) {
+      document.getElementById('feedback').innerText = "Great job! You counted all the stars!";
+      document.getElementById('option1').disabled = true;
+      document.getElementById('option2').disabled = true;
+      document.getElementById('option3').disabled = true;
+      return;
+    }
+    const count = Math.floor(Math.random() * 10) + 1;
+    currentAnswer = count;
+    const starsContainer = document.getElementById('starsContainer');
+    starsContainer.innerHTML = "<span class='star'>★</span>".repeat(count);
+    let wrong1, wrong2;
+    if (count <= 1) { wrong1 = count + 1; wrong2 = count + 2; }
+    else if (count >= 9) { wrong1 = count - 1; wrong2 = count - 2; }
+    else { wrong1 = count - 1; wrong2 = count + 1; }
+    if (wrong1 === wrong2) wrong2 = wrong1 + 2;
+    const answers = [currentAnswer, wrong1, wrong2].sort(() => Math.random() - 0.5);
+    document.getElementById('option1').innerText = answers[0];
+    document.getElementById('option2').innerText = answers[1];
+    document.getElementById('option3').innerText = answers[2];
+    document.getElementById('feedback').innerText = "";
+    allowAnswer = true;
+    questionNumber++;
+  }
+  function selectAnswer(btn) {
+    if (!allowAnswer) return;
+    const choice = parseInt(btn.innerText);
+    const feedback = document.getElementById('feedback');
+    if (choice === currentAnswer) {
+      feedback.style.color = "green"; feedback.innerText = "Correct!";
+      allowAnswer = false; setTimeout(nextQuestion, 900);
+    } else {
+      feedback.style.color = "red"; feedback.innerText = "Try again!";
+      btn.disabled = true; setTimeout(() => { feedback.innerText = ""; }, 800);
+    }
+  }
+  document.getElementById('option1').onclick = function(){ selectAnswer(this); };
+  document.getElementById('option2').onclick = function(){ selectAnswer(this); };
+  document.getElementById('option3').onclick = function(){ selectAnswer(this); };
+  nextQuestion();
+</script>
+</body>
+</html>
