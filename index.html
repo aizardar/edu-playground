@@ -1,16 +1,42 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Interactive Learning Games</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #fdfbfb, #ebedee); margin:0; text-align:center; }
+    header { background:#4d94ff; color:#fff; padding:24px; }
+    h1 { margin:0; }
+    p.tagline { margin:8px 0 0; font-size:1.1em; }
+    .age-groups { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; max-width:980px; margin:40px auto; padding:0 12px; }
+    .card { flex:1 1 260px; max-width:300px; background:#fff; border-radius:14px; padding:24px; box-shadow:0 4px 8px rgba(0,0,0,.1); text-decoration:none; color:#333; transition:.2s; }
+    .card:hover { transform: translateY(-6px); box-shadow:0 8px 18px rgba(0,0,0,.18); }
+    .card h2 { margin:0 0 8px; color:#4d94ff; }
+    footer { color:#666; font-size:.9em; margin:40px 0 24px; }
+  </style>
 </head>
 <body>
-  <h1>Interactive Learning Games</h1>
-  <p>Welcome! Choose your age group:</p>
-  <ul>
-    <li><a href="age-3-5/index.html">Ages 3–5</a></li>
-    <li><a href="age-6-8/index.html">Ages 6–8</a></li>
-    <li><a href="age-9-12/index.html">Ages 9–12</a></li>
-  </ul>
+  <header>
+    <h1>Interactive Learning Games</h1>
+    <p class="tagline">Fun, browser-based learning for ages 3–12</p>
+  </header>
+
+  <section class="age-groups">
+    <a href="age-3-5/index.html" class="card">
+      <h2>Ages 3–5</h2>
+      <p>Counting, shapes, and color mixing.</p>
+    </a>
+    <a href="age-6-8/index.html" class="card">
+      <h2>Ages 6–8</h2>
+      <p>Addition balloons, memory match, living vs non-living.</p>
+    </a>
+    <a href="age-9-12/index.html" class="card">
+      <h2>Ages 9–12</h2>
+      <p>Multiplication quiz, maze escape, reaction time.</p>
+    </a>
+  </section>
+
+  <footer>© 2025 Interactive Learning Games</footer>
 </body>
 </html>
