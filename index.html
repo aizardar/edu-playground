@@ -1,42 +1,104 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Interactive Learning Games</title>
   <style>
-    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #fdfbfb, #ebedee); margin:0; text-align:center; }
-    header { background:#4d94ff; color:#fff; padding:24px; }
-    h1 { margin:0; }
-    p.tagline { margin:8px 0 0; font-size:1.1em; }
-    .age-groups { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; max-width:980px; margin:40px auto; padding:0 12px; }
-    .card { flex:1 1 260px; max-width:300px; background:#fff; border-radius:14px; padding:24px; box-shadow:0 4px 8px rgba(0,0,0,.1); text-decoration:none; color:#333; transition:.2s; }
-    .card:hover { transform: translateY(-6px); box-shadow:0 8px 18px rgba(0,0,0,.18); }
-    .card h2 { margin:0 0 8px; color:#4d94ff; }
-    footer { color:#666; font-size:.9em; margin:40px 0 24px; }
+    body {
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f9f7f7, #dbe2ef);
+      color: #333;
+      text-align: center;
+    }
+    header {
+      background: #4d94ff;
+      color: white;
+      padding: 40px 20px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    header p {
+      margin: 10px 0 0;
+      font-size: 1.2em;
+    }
+    .hero-img {
+      margin-top: 20px;
+      max-width: 200px;
+    }
+    .age-groups {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 50px auto;
+      max-width: 1000px;
+      gap: 30px;
+    }
+    .card {
+      flex: 1 1 280px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      padding: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #333;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 16px rgba(0,0,0,0.25);
+    }
+    .card img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 15px;
+    }
+    .card h2 {
+      margin: 10px 0;
+      color: #4d94ff;
+    }
+    .card p {
+      font-size: 0.95em;
+    }
+    footer {
+      margin: 40px 0 20px;
+      font-size: 0.9em;
+      color: #666;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>Interactive Learning Games</h1>
-    <p class="tagline">Fun, browser-based learning for ages 3–12</p>
+    <p>Fun and Educational Games for children</p>
+    <img src="https://cdn-icons-png.flaticon.com/512/201/201623.png" 
+         alt="Learning Icon" class="hero-img">
   </header>
 
   <section class="age-groups">
     <a href="age-3-5/index.html" class="card">
+      <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Stars Icon">
       <h2>Ages 3–5</h2>
-      <p>Counting, shapes, and color mixing.</p>
+      <p>Counting, shapes, and color games to spark early learning fun.</p>
     </a>
     <a href="age-6-8/index.html" class="card">
+      <img src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png" alt="Puzzle Icon">
       <h2>Ages 6–8</h2>
-      <p>Addition balloons, memory match, living vs non-living.</p>
+      <p>Math puzzles, memory games, and science challenges for curious minds.</p>
     </a>
     <a href="age-9-12/index.html" class="card">
+      <img src="https://cdn-icons-png.flaticon.com/512/3565/3565418.png" alt="Brain Icon">
       <h2>Ages 9–12</h2>
-      <p>Multiplication quiz, maze escape, reaction time.</p>
+      <p>Quizzes, logic games, and experiments for advanced learners.</p>
     </a>
   </section>
 
-  <footer>© 2025 Interactive Learning Games</footer>
+  <footer>
+    Made with ❤️ for learning & fun in Zurich• © 2025
+  </footer>
 </body>
 </html>
