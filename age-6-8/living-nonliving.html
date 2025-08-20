@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Living vs Non-Living Sort (Ages 6–8, Science)</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; background: #ffffe6; color: #333; }
+  h2 { color: #444; }
+  .bins { display: flex; justify-content: center; margin: 20px; }
+  .bin { width: 160px; height: 160px; border: 2px dashed #333; border-radius: 10px; margin: 10px; padding: 10px; }
+  .bin h4 { margin: 5px; }
+  .items { margin: 20px; }
+  .item { display: inline-block; background: #e6e6e6; border: 1px solid #999; border-radius: 5px; padding: 5px 10px; margin: 5px; cursor: grab; }
+  #feedback3 { font-size: 1.2em; min-height: 1.2em; margin-top: 10px; }
+  footer { margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h2>Living vs Non-Living Sort</h2>
+  <p>Drag each item into the correct category.</p>
+  <div class="bins">
+    <div id="livingBin" class="bin" data-cat="living" ondragover="allowDrop(event)" ondrop="dropItem(event)">
+      <h4>Living Things</h4>
+    </div>
+    <div id="nonlivingBin" class="bin" data-cat="nonliving" ondragover="allowDrop(event)" ondrop="dropItem(event)">
+      <h4>Non-Living Things</h4>
+    </div>
+  </div>
+  <div class="items">
+    <div id="item1" class="item" data-cat="living" draggable="true" ondragstart="drag(event)">Dog 🐕</div>
+    <div id="item2" class="item" data-cat="living" draggable="true" ondragstart="drag(event)">Tree 🌳</div>
+    <div id="item3" class="item" data-cat="nonliving" draggable="true" ondragstart="drag(event)">Car 🚗</div>
+    <div id="item4" class="item" data-cat="nonliving" draggable="true" ondragstart="drag(event)">Rock 🪨</div>
+  </div>
+  <div id="feedback3"></div>
+  <footer><a href="index.html">← Back to Ages 6–8</a></footer>
+<script>
+  let sortedCount = 0;
+  function allowDrop(ev) { ev.preventDefault(); }
+  function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+  function dropItem(ev) {
+    ev.preventDefault();
+    const itemId = ev.dataTransfer.getData("text");
+    const itemEl = document.getElementById(itemId);
+    const targetCat = ev.currentTarget.dataset.cat;
+    if (itemEl && itemEl.dataset.cat === targetCat) {
+      ev.currentTarget.appendChild(itemEl); itemEl.setAttribute('draggable', 'false');
+      sortedCount++; const fb = document.getElementById('feedback3'); fb.style.color = "green"; fb.innerText = "Correct!";
+      if (sortedCount === 4) fb.innerText = "All items sorted correctly!";
+    } else {
+      const fb = document.getElementById('feedback3'); fb.style.color = "red"; fb.innerText = "Wrong bin, try again!";
+    }
+  }
+</script>
+</body>
+</html>

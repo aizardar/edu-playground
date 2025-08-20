@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Balloon Addition (Ages 6–8, Math)</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; background: #e6f7ff; color: #333; }
+  h2 { color: #444; }
+  #question { font-size: 1.3em; margin: 20px; }
+  .balloons { margin: 20px; }
+  .balloon { display: inline-block; width: 60px; height: 80px; border-radius: 50% 50% 50% 50%; margin: 20px; color: #fff; font-size: 1.5em; line-height: 80px; cursor: pointer; position: relative; }
+  .balloon:after { content: ''; position: absolute; bottom: -20px; left: 50%; width: 2px; height: 20px; background: #333; }
+  #balloon1 { background: #ff6666; }
+  #balloon2 { background: #66ccff; }
+  #balloon3 { background: #99cc66; }
+  #feedback2 { font-size: 1.2em; min-height: 1.2em; margin: 10px; }
+  footer { margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h2>Balloon Pop Addition</h2>
+  <p id="question"></p>
+  <div class="balloons">
+    <div id="balloon1" class="balloon" onclick="chooseAnswer(0)"></div>
+    <div id="balloon2" class="balloon" onclick="chooseAnswer(1)"></div>
+    <div id="balloon3" class="balloon" onclick="chooseAnswer(2)"></div>
+  </div>
+  <div id="feedback2"></div>
+  <footer><a href="index.html">← Back to Ages 6–8</a></footer>
+<script>
+  let currentSum = 0, currentChoices = [], questionCount = 0, score = 0;
+  const totalQuestions = 5;
+  function newQuestion() {
+    if (questionCount >= totalQuestions) {
+      document.getElementById('question').innerText = "Quiz Complete!";
+      document.getElementById('feedback2').innerText = "You got " + score + " out of " + totalQuestions + " correct.";
+      document.querySelectorAll('.balloon').forEach(b => b.onclick = null);
+      return;
+    }
+    const a = Math.floor(Math.random() * 10);
+    const b = Math.floor(Math.random() * 10);
+    currentSum = a + b;
+    document.getElementById('question').innerText = a + " + " + b + " = ?";
+    let wrong1, wrong2;
+    if (currentSum <= 1) { wrong1 = currentSum + 1; wrong2 = currentSum + 2; }
+    else if (currentSum >= 18) { wrong1 = currentSum - 1; wrong2 = currentSum - 2; }
+    else { wrong1 = currentSum + 1; wrong2 = currentSum - 1; }
+    if (wrong1 === wrong2) wrong2 = wrong1 + 2;
+    currentChoices = [currentSum, wrong1, wrong2].sort(() => Math.random() - 0.5);
+    document.getElementById('balloon1').innerText = currentChoices[0];
+    document.getElementById('balloon2').innerText = currentChoices[1];
+    document.getElementById('balloon3').innerText = currentChoices[2];
+    document.getElementById('feedback2').innerText = "";
+    questionCount++;
+  }
+  function chooseAnswer(index) {
+    const choice = currentChoices[index];
+    const feedback = document.getElementById('feedback2');
+    if (choice === currentSum) { feedback.style.color = "green"; feedback.innerText = "Correct!"; score++; }
+    else { feedback.style.color = "red"; feedback.innerText = "Incorrect. The answer was " + currentSum + "."; }
+    setTimeout(newQuestion, 1200);
+  }
+  newQuestion();
+</script>
+</body>
+</html>
