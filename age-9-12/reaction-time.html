@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Reaction Time Tester (Ages 9–12, Science)</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; background: #f0f0f0; color: #333; }
+  h2 { color: #444; }
+  #message { font-size: 1.5em; margin: 30px; }
+  #startBtn { padding: 10px 20px; font-size: 1em; }
+  #result { font-size: 1.3em; margin: 20px; }
+  footer { margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h2>Reaction Time Tester</h2>
+  <p id="message">Click "Start" and wait for the signal...</p>
+  <button id="startBtn" onclick="startTest()">Start</button>
+  <div id="result"></div>
+  <footer><a href="index.html">← Back to Ages 9–12</a></footer>
+<script>
+  let testStarted = false, signalGiven = false, startTime = 0, timeoutId;
+  function startTest() {
+    if (testStarted) return;
+    testStarted = true; signalGiven = false;
+    document.getElementById('message').innerText = "Wait for GREEN...";
+    document.getElementById('startBtn').style.display = "none";
+    document.body.style.background = "red";
+    const delay = 1000 + Math.random() * 2000;
+    timeoutId = setTimeout(() => {
+      signalGiven = true; document.body.style.background = "green";
+      document.getElementById('message').innerText = "CLICK NOW!"; startTime = Date.now();
+    }, delay);
+    document.addEventListener('click', onReaction, { once: true });
+  }
+  function onReaction(e) {
+    if (e.target.id === 'startBtn') { document.addEventListener('click', onReaction, { once: true }); return; }
+    if (!signalGiven) {
+      clearTimeout(timeoutId);
+      document.getElementById('message').innerText = "Too soon! Try again.";
+      document.getElementById('result').innerText = "";
+      document.body.style.background = "#f0f0f0"; testStarted = false;
+      document.getElementById('startBtn').style.display = "inline-block";
+    } else {
+      const reactionTime = Date.now() - startTime;
+      document.getElementById('message').innerText = "Done!";
+      document.getElementById('result').innerText = "Your reaction time: " + reactionTime + " ms";
+      document.body.style.background = "#f0f0f0"; testStarted = false; signalGiven = false;
+      document.getElementById('startBtn').style.display = "inline-block";
+    }
+  }
+</script>
+</body>
+</html>
