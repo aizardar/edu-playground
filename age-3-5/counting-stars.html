@@ -1,75 +1,285 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Counting Stars (Ages 3–5, Math)</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Counting Stars (Ages 3–5)</title>
 <style>
-  body { font-family: Arial, sans-serif; text-align: center; background: #fdf6e3; color: #333; }
-  h2 { color: #444; }
-  .stars { font-size: 2em; margin: 20px; }
-  .star { color: gold; margin: 5px; }
-  .options button { font-size: 1.2em; margin: 10px; padding: 10px 20px; }
-  #feedback { font-size: 1.2em; margin: 15px; height: 1.2em; }
-  footer { margin-top: 20px; }
+  :root{
+    --bg1:#FFFBF0; --bg2:#FFF0F5;
+    --brand:#FF7AC8; --brand2:#7ACBFF;
+    --ok:#2ecc71; --oops:#ff6b6b; --card:#ffffff;
+    --ink:#2b2b2b; --muted:#7b7b7b;
+  }
+  html,body{margin:0;padding:0}
+  body{
+    font-family: "Comic Sans MS", "Trebuchet MS", Arial, sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    background: radial-gradient( circle at 20% 20%, var(--bg1), var(--bg2) 70% );
+    display:flex; flex-direction:column; align-items:center;
+  }
+
+  header{
+    width:100%; text-align:center; color:#fff;
+    background: linear-gradient(135deg, var(--brand), var(--brand2));
+    padding:22px 16px;
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+    border-bottom-left-radius:20px; border-bottom-right-radius:20px;
+  }
+  header h1{margin:0;font-size:1.9rem; letter-spacing:.5px;}
+  header p{margin:6px 0 0; opacity:.95}
+
+  .wrap{
+    width:min(880px, 92%);
+    margin:24px auto; text-align:center;
+  }
+
+  /* Progress numbers */
+  .progress{
+    display:flex; justify-content:center; gap:10px; margin:6px 0 18px;
+  }
+  .p-num{
+    width:34px; height:34px; line-height:34px; border-radius:10px;
+    display:inline-block; font-weight:800; font-size:1rem;
+    background:#fff; color:var(--muted); box-shadow:0 3px 10px rgba(0,0,0,.08);
+    transition:.2s;
+  }
+  .p-num.done{ background:#eaf9f0; color:#1f8e54; }
+  .p-num.current{ background:#e8f1ff; color:#1751aa; transform:scale(1.06); }
+
+  /* Card */
+  .card{
+    background:var(--card);
+    border-radius:20px;
+    box-shadow:0 10px 24px rgba(0,0,0,.12);
+    padding:18px 16px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* Sky area */
+  .sky{
+    background: linear-gradient(180deg, #dff3ff, #ffffff 70%);
+    border-radius:16px;
+    min-height:160px;
+    margin:12px auto 6px;
+    display:flex; align-items:center; justify-content:center; flex-wrap:wrap;
+    gap:10px;
+    padding:18px 12px;
+    position:relative;
+  }
+  .star{
+    font-size:40px; cursor:default; user-select:none;
+    animation: twinkle 1.4s ease-in-out infinite;
+    filter: drop-shadow(0 2px 0 rgba(0,0,0,.12));
+  }
+  .star:nth-child(3n){ animation-delay:.2s }
+  .star:nth-child(4n){ animation-delay:.4s }
+  .star:nth-child(5n){ animation-delay:.6s }
+
+  @keyframes twinkle{
+    0%,100%{ transform:scale(1); opacity:1 }
+    50%{ transform:scale(.92); opacity:.85 }
+  }
+
+  /* Question */
+  .q{
+    font-size:1.2rem; margin:6px 0 12px;
+  }
+
+  /* Options */
+  .opts{ display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin:10px 0 6px; }
+  .btn{
+    border:none; color:#fff; font-weight:bold; letter-spacing:.5px;
+    padding:14px 18px; border-radius:14px; cursor:pointer; font-size:1.2rem;
+    background: linear-gradient(135deg, #FFB86B, #FF7AC8);
+    box-shadow:0 8px 16px rgba(255,122,200,.28);
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+    min-width:70px;
+  }
+  .btn:hover{ transform: translateY(-2px); }
+  .btn:disabled{ opacity:.45; cursor:default; }
+
+  .feedback{
+    min-height:1.6em; margin:10px 0 2px;
+    font-size:1.15rem; font-weight:700;
+  }
+  .ok{ color:var(--ok) } .oops{ color:var(--oops) }
+
+  footer{ margin:16px 0 26px }
+  footer a{ color:#1c66cc; text-decoration:none; font-weight:bold }
+
+  /* FULL-PAGE CONFETTI */
+  .confetti-global{
+    position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:9999;
+  }
+  .confetti-global i{
+    position:absolute; top:-10px; width:10px; height:14px; border-radius:2px;
+    animation: fall 1.4s ease-in forwards;
+    opacity:.95;
+  }
+  @keyframes fall{
+    to{ transform: translateY(110vh) rotate(260deg); opacity:0 }
+  }
 </style>
 </head>
 <body>
-  <h2>Counting Stars</h2>
-  <p>How many stars are there?</p>
-  <div id="starsContainer" class="stars"></div>
-  <div class="options">
-    <button id="option1"></button>
-    <button id="option2"></button>
-    <button id="option3"></button>
-  </div>
-  <div id="feedback"></div>
-  <footer><a href="index.html">← Back to Ages 3–5</a></footer>
+  <!-- full-page confetti layer -->
+  <div class="confetti-global" id="confettiGlobal" aria-hidden="true"></div>
+
+  <header>
+    <h1>Counting Stars</h1>
+    <p>How many stars can you count? Tap the right number!</p>
+  </header>
+
+  <main class="wrap">
+    <!-- Numeric progress -->
+    <div class="progress" id="progress" aria-label="Question progress"></div>
+
+    <section class="card">
+      <div class="q" id="questionText">How many stars are there?</div>
+
+      <div class="sky" id="starsContainer" aria-live="polite"></div>
+
+      <div class="opts">
+        <button class="btn" id="option1"></button>
+        <button class="btn" id="option2"></button>
+        <button class="btn" id="option3"></button>
+      </div>
+
+      <div id="feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <footer>
+      <a href="index.html">← Back to Ages 3–5</a>
+    </footer>
+  </main>
+
 <script>
-  let currentAnswer = 0;
-  let questionNumber = 0;
+  // ===== Game state =====
   const totalQuestions = 5;
+  let questionIndex = 0; // 0-based, will display 1-based
+  let currentAnswer = 0;
   let allowAnswer = true;
-  function nextQuestion() {
-    if (questionNumber >= totalQuestions) {
-      document.getElementById('feedback').innerText = "Great job! You counted all the stars!";
-      document.getElementById('option1').disabled = true;
-      document.getElementById('option2').disabled = true;
-      document.getElementById('option3').disabled = true;
+
+  const starsEl = document.getElementById('starsContainer');
+  const fbEl = document.getElementById('feedback');
+  const progressEl = document.getElementById('progress');
+  const confettiGlobalEl = document.getElementById('confettiGlobal');
+
+  const btns = [
+    document.getElementById('option1'),
+    document.getElementById('option2'),
+    document.getElementById('option3'),
+  ];
+  btns.forEach((b,i)=> b.addEventListener('click', ()=> selectAnswer(i)));
+
+  // Build numeric progress badges 1..total
+  function buildProgress(){
+    progressEl.innerHTML = "";
+    for(let i=0;i<totalQuestions;i++){
+      const s = document.createElement('span');
+      s.textContent = (i+1);
+      s.className = "p-num" +
+        (i < questionIndex ? " done" : i === questionIndex ? " current" : "");
+      progressEl.appendChild(s);
+    }
+  }
+
+  function nextQuestion(){
+    // end?
+    if(questionIndex >= totalQuestions){
+      fbEl.className = "feedback ok";
+      fbEl.textContent = "Amazing! You counted them all! 🏆";
+      btns.forEach(b=> b.disabled = true);
       return;
     }
-    const count = Math.floor(Math.random() * 10) + 1;
+
+    buildProgress();
+
+    // 1–10 stars
+    const count = Math.floor(Math.random()*10)+1;
     currentAnswer = count;
-    const starsContainer = document.getElementById('starsContainer');
-    starsContainer.innerHTML = "<span class='star'>★</span>".repeat(count);
+
+    // render stars (ONLY ⭐)
+    starsEl.innerHTML = "";
+    for(let i=0;i<count;i++){
+      const st = document.createElement('span');
+      st.className = "star";
+      st.textContent = "⭐";
+      starsEl.appendChild(st);
+    }
+
+    // answer set
     let wrong1, wrong2;
-    if (count <= 1) { wrong1 = count + 1; wrong2 = count + 2; }
+    if (count <= 2) { wrong1 = count + 1; wrong2 = count + 2; }
     else if (count >= 9) { wrong1 = count - 1; wrong2 = count - 2; }
     else { wrong1 = count - 1; wrong2 = count + 1; }
-    if (wrong1 === wrong2) wrong2 = wrong1 + 2;
-    const answers = [currentAnswer, wrong1, wrong2].sort(() => Math.random() - 0.5);
-    document.getElementById('option1').innerText = answers[0];
-    document.getElementById('option2').innerText = answers[1];
-    document.getElementById('option3').innerText = answers[2];
-    document.getElementById('feedback').innerText = "";
+    if (wrong1 === wrong2) wrong2 = (count + 3 <= 10) ? count + 3 : count - 3;
+
+    const choices = [count, wrong1, wrong2].sort(()=>Math.random()-0.5);
+    btns.forEach((b, idx)=>{ b.textContent = choices[idx]; b.disabled = false; b.style.opacity="1"; });
+
+    fbEl.className = "feedback";
+    fbEl.textContent = "";
+
     allowAnswer = true;
-    questionNumber++;
   }
-  function selectAnswer(btn) {
-    if (!allowAnswer) return;
-    const choice = parseInt(btn.innerText);
-    const feedback = document.getElementById('feedback');
-    if (choice === currentAnswer) {
-      feedback.style.color = "green"; feedback.innerText = "Correct!";
-      allowAnswer = false; setTimeout(nextQuestion, 900);
+
+  function selectAnswer(index){
+    if(!allowAnswer) return;
+    const choice = parseInt(btns[index].textContent, 10);
+    if(choice === currentAnswer){
+      feedbackGood();
+      sprinkleConfettiGlobal();  // FULL-PAGE CONFETTI
+      btns.forEach(b=> b.disabled = true);
+      // advance progress position
+      questionIndex++;
+      setTimeout(nextQuestion, 1000);
     } else {
-      feedback.style.color = "red"; feedback.innerText = "Try again!";
-      btn.disabled = true; setTimeout(() => { feedback.innerText = ""; }, 800);
+      feedbackOops();
+      // fade out the incorrect one to guide retry
+      btns[index].style.opacity = ".45";
+      btns[index].disabled = true;
     }
   }
-  document.getElementById('option1').onclick = function(){ selectAnswer(this); };
-  document.getElementById('option2').onclick = function(){ selectAnswer(this); };
-  document.getElementById('option3').onclick = function(){ selectAnswer(this); };
+
+  function feedbackGood(){
+    fbEl.className = "feedback ok";
+    const cheers = ["Great job!", "You got it!", "Nice counting!", "Yay!"];
+    fbEl.textContent = cheers[Math.floor(Math.random()*cheers.length)];
+  }
+
+  function feedbackOops(){
+    fbEl.className = "feedback oops";
+    const hints = ["Try again!", "Look closely!", "Count once more!"];
+    fbEl.textContent = hints[Math.floor(Math.random()*hints.length)];
+  }
+
+  // FULL-PAGE Confetti burst (no external assets)
+  function sprinkleConfettiGlobal(){
+    // clear any previous particles
+    confettiGlobalEl.innerHTML = "";
+    const colors = ["#FF7AC8","#7ACBFF","#FFD166","#95E1D3","#C3F584"];
+    const pieces = 60;
+    for(let i=0;i<pieces;i++){
+      const p = document.createElement('i');
+      p.style.left = (Math.random()*96+2) + "%";
+      p.style.background = colors[i%colors.length];
+      p.style.transform = `translateY(0) rotate(${Math.random()*120}deg)`;
+      p.style.animationDelay = (Math.random()*0.35) + "s";
+      p.style.width = (8 + Math.random()*6) + "px";
+      p.style.height = (10 + Math.random()*10) + "px";
+      confettiGlobalEl.appendChild(p);
+    }
+    // auto-clear after a moment
+    setTimeout(()=> confettiGlobalEl.innerHTML = "", 1800);
+  }
+
+  // Start at question 1
+  questionIndex = 0;
+  buildProgress();
   nextQuestion();
 </script>
 </body>
